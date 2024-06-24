@@ -1,0 +1,126 @@
+{# projet/templates/layout.html: #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/accueil.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/menu.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <title>SmartLogiLab</title>
+</head>
+<body>
+    <div class="banner">
+        <img alt="logos images le havre université soget smartlogilab litis anr" class="img-fluid" src="../static/assets/img/bandeau_align_soget_litis__ulhn_anr.png" >
+    </div>
+<div class="pos-f-t">
+
+    <nav class="navbar navbar-expand-lg  bg-body-tertiary">
+    <div class="col-md-2">
+<a class="navbar-brand" href="#"><img alt="" src="/img_public/LOGO_SLL.png" ></a>
+
+    </div>
+      <div class="col_md_8">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto menu">
+      <div class="row">
+      <div class="col">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ url_for('index.index') }}">Accueil</a>
+        </li>
+      </div>
+      <div class="col">
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle" href="{{ url_for('actu.actualite') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Actualités
+          </a>
+          <ul class="dropdown-menu submenu dropdown-menu-dark">
+                   {% if current_user.is_authenticated %}
+            <li><a class="dropdown-item" href="{{ url_for('actu.addActu') }}">Ajouter une Actualité</a></li>
+                {% endif %}
+          </ul>
+        </li>
+      </div>
+      <div class="col">
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="{{ url_for('prog.programme') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Programmes
+          </a>
+          <ul class="dropdown-menu submenu dropdown-menu-dark">
+                   {% if current_user.is_authenticated %}
+            <li><a class="dropdown-item" href="{{ url_for('prog.addProg') }}">Ajouter un Programme</a></li>
+                {% endif %}
+          </ul>
+          </li>
+      </div>
+      <div class="col">
+          <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle" href="{{ url_for('publi.publication') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Publication
+          </a>
+          <ul class="dropdown-menu submenu dropdown-menu-dark">
+                   {% if current_user.is_authenticated %}
+            <li><a class="dropdown-item" href="{{ url_for('publi.addPub') }}">Ajouter une Publication</a></li>
+                {% endif %}
+          </ul>
+          </li>
+      </div>
+      <div class="col">
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="{{ url_for('gouv.membres') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Membres et gouvernances
+          </a>
+          <ul class="dropdown-menu submenu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="{{ url_for('gouv.gouvernances') }}">Gouvernance</a></li>
+          </ul>
+          </li>
+      </div>
+      <div class="col">
+        <li class="nav-item dropdown">
+        {% if not current_user.is_authenticated %}
+        <a class="nav-link dropdown-toggle" href="{{ url_for('auth.login') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Connexion
+          </a>
+          {% else %}
+            <a class="nav-link dropdown-toggle" href="{{ url_for('auth.logout') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Déconnexion
+          </a>
+            <ul class="dropdown-menu submenu dropdown-menu-dark">
+		    	<li><a href="#">{{name}}</a></li>
+		    	  <li><a href="{{ url_for('auth.signin') }}">Nouvel Utilisateur</a>
+		    	</li>
+            </ul>
+		    {% endif %}
+        </li>
+      </div>
+      </div>
+      </ul>
+  </div>
+ </div>
+
+
+
+</nav>
+
+        <section >
+
+           <div class="container">
+               <img alt="images décoration droite" src="../static/assets/img/graphics_SLL_assets_transparency_right_corner.png" class="back_img_upper ">
+                    {% block content %}
+                    {% endblock %}
+                <br />
+               <p>SmartLogiLab créé en 2023 et soutenu par l'ANR.</p>
+           <br />
+           <br />
+           <img alt="images décoration gauche" src="../static/assets/img/graphics_bottom_SLL_bottom_left%20corner.png" class="back_img_bottom ">
+            </div>
+        </section>
+    </body>
+</html>

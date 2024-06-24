@@ -1,0 +1,54 @@
+{# projet/templates/index.html: #}
+{% extends "layout.html" %}
+{% block content %}
+		<form name="addForm" id="addForm" method="POST" enctype="multipart/form-data" action="{{ url_for('prog.addProg') }}" novalidate>
+            <div class="control-group">
+			<div class="form-group floating-label-form-group controls">
+				<label>Titre du nouveau programmme de recherche de SmarLogiLab</label>
+				<input type="text" class="form-control" placeholder="Titre de l'activité" name="title" id="title" required
+				data-validation-required-message="Please enter a title.">
+				<p class="help-block text-danger"></p>
+			</div>
+			</div>
+
+			<div class="control-group">
+			<div class="form-group col-xs-12 floating-label-form-group controls">
+				<label>auteur de ce post</label>
+				<input type="text" class="form-control" placeholder="auteur du post" name="author" id="author" required
+				data-validation-required-message="Please enter your phone number.">
+				<p class="help-block text-danger"></p>
+			</div>
+			</div>
+			<div class="control-group">
+			<div class="form-group floating-label-form-group controls">
+				<label>Contenu de l'activité (Description)</label>
+				<textarea rows="5" class="form-control" placeholder="Description de l'activité" name="content" id="content" required
+				data-validation-required-message="Please enter a message."></textarea>
+				<p class="help-block text-danger"></p>
+			</div>
+			</div>
+			<div class="control-group">
+                <label for="formFileSm" class="form-label">Illustration</label>
+                <input class="form-control form-control-sm" name="file" id="file" type="file">
+                <div class="form-group floating-label-form-group controls">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="orientation" id="orientation_droite" value="1">
+                          <label class="form-check-label" for="orientation_droite">
+                            image à droite
+                          </label>
+                        </div>
+                        <div class="form-check">
+                             <input class="form-check-input" type="radio" name="orientation" id="orientation_gauche" value="2">
+                              <label class="form-check-label" for="orientation_gauche">
+                                image à gauche
+                              </label>
+                        </div>
+                </div>
+            </div>
+			<br>
+			<div id="success"></div>
+			<div class="form-group">
+			<button type="submit" class="btn btn-secondary" id="sendMessageButton">Soumettre</button>
+			</div>
+		</form>
+{% endblock %}

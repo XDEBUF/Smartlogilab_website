@@ -1,0 +1,53 @@
+{# projet/templates/update.html: #}
+{% extends "layout.html" %}
+{% block content %}
+                     <form name="addForm" id="addForm" method="POST"  enctype="multipart/form-data" action="/updateActu/{{edit.id}}" novalidate>
+                     <div class="control-group">
+                            <div class="form-group floating-label-form-group controls">
+                                <label>Titre</label>
+                                <input type="text" class="form-control" value="{{edit.title}}" name="title" id="title"
+                                    required data-validation-required-message="Renseignez le Titre.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+						<div class="control-group">
+							<div class="form-group col-xs-12 floating-label-form-group controls">
+								<label>auteur</label>
+								<input type="text" class="form-control" value="{{edit.author}}" name="author"
+									id="author" required />
+									<p class="help-block text-danger"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="form-group floating-label-form-group controls">
+								<label>Actualités à éditer</label>
+								<input type="text" value="{{edit.content}}" name="content" id="content"
+									class="form-control">
+								<p class="help-block text-danger"></p>
+							</div>
+						</div>
+                         <div class="control-group">
+                          <label for="formFileSm" class="form-label">Illustration</label>
+                <input class="form-control form-control-sm" name="file" id="file" type="file" value = "{{ edit.filename }}" placeholder="{{ edit.filename }}">
+                <div class="form-group floating-label-form-group controls">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="orientation" id="orientation_droite" value="1" checked>
+                          <label class="form-check-label" for="orientation_droite">
+                            image à droite
+                          </label>
+                        </div>
+                        <div class="form-check">
+                             <input class="form-check-input" type="radio" name="orientation" id="orientation_gauche" value="2">
+                              <label class="form-check-label" for="orientation_gauche">
+                                image à gauche
+                              </label>
+                        </div>
+						<br>
+						<div id="success"></div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-secondary" id="sendMessageButton">Send</button>
+						</div>
+                </div>
+                         </div>
+                     </form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{# projet/templates/programmes.html: #}
+{% extends "layout.html" %}
+  {% block content %}
+      <h2>Publications de SmartLogiLab</h2>
+    <br />
+      {% for articles in article %}
+               <br />
+				<h2>
+                    {{ articles.title }}
+				</h2>
+             <section class="subsection">
+             {% if articles.orientation==1 %}
+                 <p class="image_droite">
+             <img alt="{{ articles.filename }}" class="img_responsive" src="{{url_for('static', filename="img_public/" + articles.filename) }}" >
+				<p class="text-align">{{articles.content}}</p>
+             {% else %}
+                  <p class="image_gauche">
+             <img alt="{{ articles.filename }}" class="img_responsive" src="{{url_for('static', filename="img_public/" + articles.filename) }}" >
+				<p class="text-align">{{articles.content}}</p>
+             {% endif %}
+                 <a class="link" href="{{ articles.link }}">{{ articles.text_link }}</a>
+                    <br/>
+					<!-- Check if the user.py is not guest, if guest "edit and delete button will be hidden" -->
+					 {% if current_user.is_authenticated %}
+					<a href="/updatePubli/{{articles.id}}" id="content">Editer</a>
+					<a href="/deletePubli/{{articles.id}}" id ="delete">Supprimer</a>
+					{% endif %}
+
+             </section>
+			{% endfor %}
+{% endblock %}
