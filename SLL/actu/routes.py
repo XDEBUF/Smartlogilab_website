@@ -60,8 +60,8 @@ def updateActu(id):
         post.title = title
         post.author = author
         post.content = content
-        post.filename = file_name
-
+        if file_name:
+            post.filename = file_name
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('actu.actualite'))

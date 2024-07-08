@@ -1,64 +1,45 @@
 {# projet/templates/index.html: #}
 {% extends "layout.html" %}
 {% block content %}
+
+    <h2>Recherche de Publications dans HAL</h2>
+    <p>Renseigner un ou plusieurs nom(s) de chercheur(s) ou doctorant(s) pour trouver leurs publications (communes, le cas échéant) dans la base de recherche de HAL</p>
 		<form name="addForm" id="addForm" method="POST" enctype="multipart/form-data" action="{{ url_for('publi.addPub') }}" novalidate>
 			<div class="control-group">
-			<div class="form-group floating-label-form-group controls">
-				<label>Titre de la nouvelle publication de SmartLogiLab</label>
-				<input type="text" class="form-control" placeholder="Titre de l'activité" name="title" id="title" required
-				data-validation-required-message="Please enter a title.">
-				<p class="help-block text-danger"></p>
-			</div>
-			</div>
+			<div class="input-group">
+            <div class="form-outline" data-mdb-input-init>
 
-			<div class="control-group">
-			<div class="form-group col-xs-12 floating-label-form-group controls">
-				<label>auteur de ce post</label>
-				<input type="text" class="form-control" placeholder="auteur du post" name="author" id="author" required
-				data-validation-required-message="Please enter your phone number.">
-				<p class="help-block text-danger"></p>
-			</div>
-			</div>
-			<div class="control-group">
-			<div class="form-group floating-label-form-group controls">
-				<label>Contenu de l'activité (Description)</label>
-				<textarea rows="5" class="form-control" placeholder="Description de l'activité" name="content" id="content" required
-				data-validation-required-message="Please enter a message."></textarea>
-				<p class="help-block text-danger"></p>
-			</div>
-			</div>
-			<div class="form-group col-xs-12 floating-label-form-group controls">
-				<label>texte du lien</label>
-				<input type="text" class="form-control" placeholder="texte du lien" name="text_link" id="text_link">
-				<p class="help-block text-danger"></p>
-			</div>
-            <div class="form-group col-xs-12 floating-label-form-group controls">
-				<label>lien vers l'article</label>
-				<input type="text" class="form-control" placeholder="lien vers l'article" name="link" id="link">
-				<p class="help-block text-danger"></p>
-			</div>
-           <div class="control-group">
-                <label for="formFileSm" class="form-label">Illustration</label>
-                <input class="form-control form-control-sm" name= "file" id="file" type="file">
-                <div class="form-group floating-label-form-group controls">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="orientation" id="orientation_droite" value="1">
-                          <label class="form-check-label" for="orientation_droite">
-                            image à droite
-                          </label>
-                        </div>
-                        <div class="form-check">
-                             <input class="form-check-input" type="radio" name="orientation" id="orientation_gauche" value="2">
-                              <label class="form-check-label" for="orientation_gauche">
-                                image à gauche
-                              </label>
-                        </div>
-                </div>
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name='author' id='author' aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">rechercher des articles par auteur(s)</button>
+
+                     {% if hal_articles %}
+                <button type="submit" class="btn btn-secondary" id="sendMessageButton">Soumettre les articles sélectionnés</button>
+                      {% endif %}
             </div>
-			<br>
-			<div id="success"></div>
+            </div>
+            </div>
+
+
+
+
 			<div class="form-group">
-			<button type="submit" class="btn btn-secondary" id="sendMessageButton">Soumettre</button>
+                {% for hal_article in hal_articles %}
+                {% for article in hal_article %}
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="article_select" value="{{article[1][0]}}">
+                  <label class="form-check-label" for="flexCheckDefault">
+                  <div class="list-group">
+                      <a href="#" class="list-group-item list-group-item-action active">
+                         <label>{{ article[1][0] }}</label>
+                      </a>
+                    </div></label>
+                </div>
+                {% endfor %}
+
+             {% endfor %}
+
+
+   </form>
 			</div>
-		</form>
+            <div id="success"></div>
 {% endblock %}

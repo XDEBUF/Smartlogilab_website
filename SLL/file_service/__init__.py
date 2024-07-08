@@ -5,6 +5,8 @@ from flask import flash, request
 from werkzeug.utils import secure_filename
 from Config import Config
 import os
+'''changer le nom de module en control_func plutot que file_service'''
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response, render_template, request, redirect, url_for
 from Config import Config
 from SLL.extension import db
 from .auth.routes import load_user
@@ -14,8 +14,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     db.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
-    login_manager.user_loader(load_user)
+    #login_manager.login_view = 'login'
+    #login_manager.user_loader(load_user)
     logging.basicConfig()
     logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 

@@ -1,15 +1,18 @@
 
 from flask_login import login_required, current_user
-from flask import request, redirect, url_for, render_template
+from flask import request, redirect, url_for, render_template,Response
 from datetime import datetime
 from . import publi
-from SLL.models.publi import Publi
+from SLL.models.Publi_selected import Publi_selected
 from SLL.file_service import save_on_server
 from SLL.extension import db
+from .HAL_Search import json_HAL
+import numpy as np
 @publi.route("/publications")
 def publication():
-    blogs = db.session.query(Publi)
-    article = blogs.order_by(Publi.post_date.desc()).all()
+    blogs = db.session.query(Publi_selected)
+    article = blogs.order_by(Publi_selected.post_date.desc()).all()
+
     print(current_user.is_anonymous)
     if current_user.is_anonymous:
         name = "guest"
@@ -17,56 +20,37 @@ def publication():
         name = current_user.username
         print("bye")
 
-    return render_template('publications.html', article=article, name=name)
+    return Response(render_template('publications.html',  name=name, article=article))
+
 @publi.route('/addPub', methods=['POST', 'GET'])
 @login_required
 def addPub():
+    hal_articles=[]
+    author_db=''
     if request.method == 'POST':
-        title = request.form['title']
         author = request.form['author']
-        content = request.form['content']
-        file = request.files['file']
-        file_name = save_on_server(file)
-        orientation = request.form['orientation']
-        text_link = request.form['text_link']
-        link = request.form['link']
-        post = Publi(title=title, author=author,
-                    content=content, post_date=datetime.now(),
-                    filename=file_name,
-                    orientation=orientation,
-                    text_link=text_link, link=link
-                    )
-
-        db.session.add(post)
+        ''' faire une regex pour selectionner les uniquement les carecteres (min ou maj) et les mettre en min puis séparer par une virgule '''
+        author = author.strip()
+        author = author.replace(' ', ',')
+        author = author.lower()
+        author_db = str(author)
+        print('author', type(author))
+        print('author_db', author_db)
+        author = np.array([author], dtype="object")
+        hal_articles = json_HAL(author)
+        values = request.form.getlist('article_select')
+        for value in values:
+            post = Publi_selected( publication=value, post_date=datetime.now())
+            db.session.add(post)
         db.session.commit()
-        print("Done")
-        return redirect(url_for('publi.publication'))
-    return render_template('addPub.html')
-@publi.route('/updatePubli/<int:id>', methods=['POST', 'GET'])
+    return render_template('addPub.html', hal_articles=hal_articles)
+
+@publi.route('/deletePubli/<int:id>')
 @login_required
-def updatePubli(id):
-    blogs = db.session.query(Publi)
-    if request.method == 'POST':
+def deletePubli(id):
+    blogs = db.session.query(Publi_selected)
+    d = blogs.filter_by(id=id).first()
+    db.session.delete(d)
+    db.session.commit()
+    return redirect(url_for('publi.publication'))
 
-        title = request.form['title']
-        author = request.form['author']
-        content = request.form['content']
-        file = request.files['file']
-        file_name = save_on_server(file)
-        link = request.form['link']
-        text = request.form['text_link']
-        post = blogs.filter_by(id=id).first()
-
-        post.title = title
-        post.author = author
-        post.content = content
-        post.filename = file_name
-        post.text_link = text
-        post.link = link
-
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for("publi.publication"))
-
-    edit = blogs.filter_by(id=id).first()
-    return render_template('updatePubli.html', edit=edit)
