@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="true" type="PythonConfigurationType" factoryName="Python" activateToolWindowBeforeRun="false">
-    <module name="SmartLL" />
+    <module name="cv" />
     <option name="ENV_FILES" value="$PROJECT_DIR$/.env" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
